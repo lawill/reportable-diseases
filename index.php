@@ -110,11 +110,7 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
                                     echo "<div class=\"message\">$_SESSION[message]</div>";
                                 }
                                 ?>
-                                <?
-                                $test_list = links_from_tags('first_tag,second_tag', 3, 'FAQ,HotTopic,Algorithm');
-                                echo $test_list;
-                                ?>
-
+                                
                                 <h1>Reportable Disease Portal</h1>
 
                                 <div id="callout_boxes">
@@ -155,7 +151,7 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
                                             <?php
                                             $alignment = "horizontal";
                                             $font_size = "12";
-                                            include_once("calendar.inc.php");
+                                            include("calendar.inc.php");
                                             ?>
                                         </form>
                             <?php 

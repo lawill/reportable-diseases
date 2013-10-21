@@ -12,20 +12,12 @@ $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
 
-
 header('Content-Type: text/csv; charset=utf-8');
 header("Content-Disposition: attachment; filename=$account_number-$start_date-$end_date.csv");
 
 $where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
 $views_insert = "INSERT into reportable_diseases_views
                    VALUES";
-
-
-
-$protect_from_forgery = true;
-$page_permission = 'Regional Manager';
-$specific_permission = 'Receive Reportable Disease Reports';
-
 
 /* This script creates a CSV report based on a date range and an account number */
 // require(''.'master.inc.php');

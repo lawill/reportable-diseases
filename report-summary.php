@@ -4,7 +4,7 @@
 //$page_permission = 'Regional Manager';
 $specific_permission = 'Receive Reportable Disease Reports';
 require('' . 'master.inc.php');
-
+require('authorize.inc.php');
 
 $account_where = array();
 $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
