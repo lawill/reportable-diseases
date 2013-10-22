@@ -11,7 +11,6 @@ require_once('' . 'master.inc.php');
 require_once('authorize.inc.php');
 $start_date = date('Y-m-d', $_SESSION['form_data']['start_date']);
 $end_date = date('Y-m-d', $_SESSION['form_data']['end_date']);
-$where = array();
 
 $account = trim($_SESSION['form_data']['account'], 'C');
 $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
@@ -43,8 +42,6 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
 
                 </head>
                 <body>
-
-
                     <noscript>
                         <style type="text/css" media="screen">
                             .menuGroup ul, .menuGroup ul ul, .menuGroupExpanded ul ul, .menuGroupActive ul ul {

@@ -29,9 +29,9 @@ fputcsv($output, array('Agency_Name', 'Agency_State', 'Client_Account', 'Last_Na
 
 
 if ($account_number == "all") {
-    $where = "";
+    $account_where = "";
 } else {
-    $where = "and Client_Account = '$account_number'";
+    $account_where = "and Client_Account = '$account_number'";
 }
 
 $query_string = "SELECT Agency_Name, Agency_State, Client_Account, 
@@ -43,6 +43,7 @@ $query_string = "SELECT Agency_Name, Agency_State, Client_Account,
                   FROM reportable_diseases 
                   where Reported_Date >= '$start_date'
                   and Reported_Date <= '$end_date'
+                  $account_where
                   $where";
 
 $data_result = mysql_query($query_string, $invoice_db);
