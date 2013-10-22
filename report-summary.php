@@ -59,26 +59,14 @@ if ($account_number == "all") {
 }
 
 
+
 $pdf->ln(10);
 
 $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
       $where";
-/*
-  $agency_name_query =
-  "SELECT Agency_Name, Agency_State FROM reportable_diseases
-  where Reported_Date >= '$start_date'
-  and Reported_Date <= '$end_date'
-  and Client_Account = '$account_number'";
 
-  $agency_name_result = mysql_query($agency_name_query, $invoice_db);
-
-  $agency_name_array = mysql_fetch_array($agency_name_result);
-
-  $agency_name = $agency_name_array['Agency_Name'];
-  $agency_state = $agency_name_array['Agency_State'];
- */
 $agency_name_result = mysql_query($agency_name_query, $invoice_db);
 
 while ($agency_info = mysql_fetch_array($agency_name_result)) {
