@@ -24,7 +24,6 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
         <meta name="keywords" content="Mayo Medical Laboratories, MML, mission, esoteric, testing, laboratory services, " />
         <meta name="description" content="Our mission is to support the local delivery of laboratory services through the provision of exceptional reference laboratory services and by providing support services which facilitate and augment community integration efforts. " />
         <!-- InstanceEndEditable -->
-        <link rel="stylesheet" type="text/css" href="jquery.datepick.css"> 
             <link rel="stylesheet" type="text/css" href="../../css/print.css" media="print" />
             <link rel="stylesheet" type="text/css" href="../../css/mml.css" media="screen" />
             <link rel="stylesheet" type="text/css" href="../../css/main_navigation.css" media="screen" />
@@ -138,7 +137,7 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
                                 <div id="pagebody"><!-- InstanceBeginEditable name="pageBody" -->
 
                                     <div id="notes">
-                                        <h3>Feedback & Suggestions</h3>
+                                        <h3>Feedback &amp; Suggestions</h3>
                                         Of the enhancements currently in development, many reflect input and suggestions directly from our clients. If you have comments or suggestions regarding these reports or any other MML services, contact your MML field service representative.
 
                                     </div>
