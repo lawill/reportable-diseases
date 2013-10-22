@@ -1,31 +1,17 @@
 <?php
-
-$pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
-$pdf->SetMargins(48, 50, 70);
-$pdf->SetAutoPageBreak(TRUE, 48);
-$pdf->AddPage();
-$pdf->SetLineWidth(0.5);
-
-
-
-$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
-
-$pdf->ln(54);
 $pdf->SetFont('helvetica', 'B', 12);
-$pdf->Cell(500, 14, "Reportable Disease Summary", '', 0, 'L', 0, 0, 1, 0, '', 'C');
-$pdf->ln(14);
-$pdf->Cell(500, 14, "$start_date to $end_date", '', 0, 'L', 0, 0, 1, 0, '', 'C');
-$pdf->ln(30);
 
 //these values are used for determining which year and month to search for within the SQL statements
 
+    $total_for_account_query = "SELECT COUNT(*) as Count 
+                               FROM reportable_diseases 
+                               WHERE Client_Account = '$account_number' 
+                               AND Reported_Date >= '$start_date'
+                               AND Reported_Date <= '$end_date'";
+    $total_count_result = mysql_query($total_for_account_query, $invoice_db);
+    $total_count = mysql_fetch_array($total_count_result);
+    $count = $total_count['Count'];
 
-if ($account_number == "all") {
-    $client_name = "All Accounts";
-
-    $pdf->Cell(500, 14, "$client_name", '', 0, 'L', 0, 0, 1, 0, '', 'C');
-    $pdf->ln(14);
-} else {
     $account_name_query = "SELECT name, client_id
                          FROM crm_accounts
                          WHERE number = '$account_number'";
@@ -55,7 +41,8 @@ if ($account_number == "all") {
     $pdf->ln(14);
     $pdf->Cell(500, 14, "Client # $account_number", '', 0, 'L', 0, 0, 1, 0, '', 'C');
     $pdf->ln(14);
-    $pdf->Cell(500, 14, "$address1", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+    $pdf->Cell(350, 14, "$address1", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+    $pdf->Cell(150, 14, "Report Total: Number Reported = $count", '', 0, 'L', 0, 0, 1, 0, '', 'C');
     $pdf->ln(14);
     if (!empty($address2)) {
         $pdf->Cell(500, 14, "$address2", '', 0, 'L', 0, 0, 1, 0, '', 'C');
@@ -67,5 +54,5 @@ if ($account_number == "all") {
     }
     $pdf->Cell(500, 14, "$city, $state $postal_code", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
     $pdf->ln(14);
-}
+
 ?>

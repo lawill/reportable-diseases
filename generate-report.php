@@ -51,28 +51,60 @@ $end_date = $_GET['end_date'];
 require('views_update.php');
 
 if ($account_number == "all") {
-    $where = "AND" . implode(' AND ', $account_where);
-} else {
-    $where = "and Client_Account = '$account_number'";
+    $account_list_query = "SELECT DISTINCT Client_Account
+      FROM reportable_diseases
+      where Reported_Date >= '$start_date'
+             and " . implode(' AND ', $account_where) . "
+       and Reported_Date <= '$end_date'";
 }
+ else {
+     $account_list_query = "SELECT DISTINCT Client_Account
+      FROM reportable_diseases
+      where Reported_Date >= '$start_date'
+             and Client_Account = $account_number
+       and Reported_Date <= '$end_date'";
+ }
 
-require_once('header.inc.php');
 
-//echo $client_name."\n";
+    $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysql_error($invoice_db));
+
+
+$pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
+$pdf->SetMargins(48, 50, 70);
+$pdf->SetAutoPageBreak(TRUE, 48);
+$pdf->AddPage();
+$pdf->SetLineWidth(0.5);
+
+
+
+$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+
+$pdf->ln(54);
+$pdf->SetFont('helvetica', 'B', 12);
+$pdf->Cell(500, 14, "Reportable Disease Summary", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+$pdf->ln(14);
+$pdf->Cell(500, 14, "$start_date to $end_date", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+$pdf->ln(30);
+
+while ($account_info = mysql_fetch_array($account_list_result))
+{
+$account_number = $account_info['Client_Account'];
+require('header.inc.php');
 
 $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
-      $where";
+      and Client_Account = '$account_number'";
 
 $agency_name_result = mysql_query($agency_name_query, $invoice_db);
+$where = "AND Client_Account = '$account_number'";
 
 while ($agency_info = mysql_fetch_array($agency_name_result)) {
 
 
     $agency_name = $agency_info['Agency_Name'];
     $agency_state = $agency_info['Agency_State'];
-
+    
     $pdf->SetFont('helvetica', 'B', 12);
     $pdf->ln(8);
     $pdf->Cell(500, 14, "$agency_name - $agency_state", '', 0, 'L', 0, 0, 1, 0, '', 'C');
@@ -194,6 +226,8 @@ while ($agency_info = mysql_fetch_array($agency_name_result)) {
         $pdf->Cell(500, 10, "", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
         $pdf->ln(21);
     }
+}
+
 }
 
 $pdf->SetFont('helvetica', '', 11);

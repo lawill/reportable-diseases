@@ -49,73 +49,102 @@ $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 require('views_update.php');
 
-require_once('header.inc.php');
+$pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
+$pdf->SetMargins(48, 50, 70);
+$pdf->SetAutoPageBreak(TRUE, 48);
+$pdf->AddPage();
+$pdf->SetLineWidth(0.5);
+
+
+
+$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+
+$pdf->ln(54);
+$pdf->SetFont('helvetica', 'B', 12);
+$pdf->Cell(500, 14, "Reportable Disease Summary", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+$pdf->ln(14);
+$pdf->Cell(500, 14, "$start_date to $end_date", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+$pdf->ln(30);
 
 if ($account_number == "all") {
-    $where = "AND" . implode(' AND ', $account_where);
-    //echo $where;
+    $account_list_query = "SELECT DISTINCT Client_Account
+      FROM reportable_diseases
+      where Reported_Date >= '$start_date'
+             and " . implode(' AND ', $account_where) . "
+       and Reported_Date <= '$end_date'";
 } else {
-    $where = "and Client_Account = '$account_number'";
+    $account_list_query = "SELECT DISTINCT Client_Account
+      FROM reportable_diseases
+      where Reported_Date >= '$start_date'
+             and Client_Account = $account_number
+       and Reported_Date <= '$end_date'";
 }
 
+$account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysql_error($invoice_db));
 
 
-$pdf->ln(10);
+while ($account_info = mysql_fetch_array($account_list_result)) {
+    $account_number = $account_info['Client_Account'];
+    $where = "AND Client_Account = '$account_number'";
+    require('header.inc.php');
 
-$agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
+    $pdf->ln(10);
+
+    $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
       $where";
 
-$agency_name_result = mysql_query($agency_name_query, $invoice_db);
+    $agency_name_result = mysql_query($agency_name_query, $invoice_db);
 
-while ($agency_info = mysql_fetch_array($agency_name_result)) {
-    $pdf->ln(16);
-    $agency_name = $agency_info['Agency_Name'];
-    $agency_state = $agency_info['Agency_State'];
+    while ($agency_info = mysql_fetch_array($agency_name_result)) {
+        $pdf->ln(16);
+        $agency_name = $agency_info['Agency_Name'];
+        $agency_state = $agency_info['Agency_State'];
 
-    $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->SetFont('helvetica', 'B', 12);
 
-    $pdf->Cell(350, 12, "$agency_name - $agency_state", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
+        $pdf->Cell(350, 12, "$agency_name - $agency_state", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
 
 
-    $test_name_result = mysql_query($test_name_query, $invoice_db);
+        $test_name_result = mysql_query($test_name_query, $invoice_db);
 
-    $test_name_query = "SELECT
+        $test_name_query = "SELECT
  Count(Test_Name) as count from reportable_diseases 
        where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
        and Agency_Name = '$agency_name'
       $where";
 
-    $test_name_result = mysql_query($test_name_query, $invoice_db);
+        $test_name_result = mysql_query($test_name_query, $invoice_db);
 
-    while ($test_info = mysql_fetch_array($test_name_result)) {
+        while ($test_info = mysql_fetch_array($test_name_result)) {
 
 
-        $count = $test_info['count'];
-        $total_tests = $total_tests + $count;
+            $count = $test_info['count'];
+            $total_tests = $total_tests + $count;
 
-        $pdf->Cell(80, 12, "$count ", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
-        $pdf->Cell(70, 12, "", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
-        $pdf->ln(22);
+            $pdf->Cell(80, 12, "$count ", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
+            $pdf->Cell(70, 12, "", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
+            $pdf->ln(22);
 
-        $pdf->SetFont('helvetica', '', 12);
-        $test_select = "SELECT Test_Name, Count(Test_Name) as count from reportable_diseases 
+            $pdf->SetFont('helvetica', '', 12);
+            $test_select = "SELECT Test_Name, Count(Test_Name) as count from reportable_diseases 
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
        and Agency_Name = '$agency_name'
       $where" . " group by Test_Name asc";
 
-        $test_result = mysql_query($test_select, $invoice_db);
+            $test_result = mysql_query($test_select, $invoice_db);
 
 
-        while ($test_data = mysql_fetch_array($test_result)) {
+            while ($test_data = mysql_fetch_array($test_result)) {
 
-            $pdf->Cell(350, 14, $test_data['Test_Name'], '', 0, 'L', 0, 0, 1, 0, '', 'C');
-            $pdf->Cell(77, 12, $test_data['count'], '', 0, 'R', 0, 0, 1, 0, '', 'C');
-            $pdf->Cell(73, 12, "", '', 0, 'R', 0, 0, 1, 0, '', 'C');
-            $pdf->ln(12);
+                $pdf->Cell(350, 14, $test_data['Test_Name'], '', 0, 'L', 0, 0, 1, 0, '', 'C');
+                $pdf->Cell(77, 12, $test_data['count'], '', 0, 'R', 0, 0, 1, 0, '', 'C');
+                $pdf->Cell(73, 12, "", '', 0, 'R', 0, 0, 1, 0, '', 'C');
+                $pdf->ln(12);
+            }
         }
     }
 }
