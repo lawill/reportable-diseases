@@ -19,6 +19,9 @@ $where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authoriz
 $views_insert = "INSERT into reportable_diseases_views
                    VALUES";
 
+$account_where = array();
+$account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
+
 /* This script creates a CSV report based on a date range and an account number */
 // require(''.'master.inc.php');
 
@@ -29,9 +32,9 @@ fputcsv($output, array('Agency_Name', 'Agency_State', 'Client_Account', 'Last_Na
 
 
 if ($account_number == "all") {
-    $account_where = "";
+    $where = "AND" . implode(' AND ', $account_where);
 } else {
-    $account_where = "and Client_Account = '$account_number'";
+    $where = "and Client_Account = '$account_number'";
 }
 
 $query_string = "SELECT Agency_Name, Agency_State, Client_Account, 
@@ -43,7 +46,6 @@ $query_string = "SELECT Agency_Name, Agency_State, Client_Account,
                   FROM reportable_diseases 
                   where Reported_Date >= '$start_date'
                   and Reported_Date <= '$end_date'
-                  $account_where
                   $where";
 
 $data_result = mysql_query($query_string, $invoice_db);
