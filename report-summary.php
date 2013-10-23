@@ -167,6 +167,8 @@ $pdf->Cell(500, 10, "your obligation to report, nor is it a guarantee that all a
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Mayo Medical Laboratories');
 
+header("Pragma: public");
+header("Expires: 0");
 
 $pdf->Output($account_number . '-' . $start_date . '-' . $end_date . '-summary.pdf', 'I');
 ?>

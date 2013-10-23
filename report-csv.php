@@ -7,6 +7,8 @@ require('' . 'master.inc.php');
 require_once('authorize.inc.php');
 
 
+//filter/validate date information here
+
 $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
@@ -14,6 +16,9 @@ $end_date = $_GET['end_date'];
 
 header('Content-Type: text/csv; charset=utf-8');
 header("Content-Disposition: attachment; filename=$account_number-$start_date-$end_date.csv");
+
+header("Pragma: public");
+header("Expires: 0");
 
 $where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
 $views_insert = "INSERT into reportable_diseases_views

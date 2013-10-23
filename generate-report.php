@@ -246,5 +246,8 @@ $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
+header("Pragma: public");
+header("Expires: 0");
+
 $pdf->Output($account_number . '-' . $start_date . '-' . $end_date . '.pdf', 'I');
 ?>
