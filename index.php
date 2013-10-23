@@ -143,7 +143,7 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
                                     </div>
                                     <br>
 
-                                        <form action="index.php" method="post" onsubmit="return checkDateValues();"></a>
+                                        <form action="index.php" method="get" onsubmit="return checkDateValues();"></a>
                                             <?php
                                             $alignment = "horizontal";
                                             $font_size = "12";

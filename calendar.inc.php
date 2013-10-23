@@ -71,12 +71,12 @@
             <tr style="border: 0px solid transparent;">
                 <td style="border: 0px solid transparent;" width="150"> Start Date: </td>
                 <td style="border: 0px solid transparent;"> <input size="15" type="text" name="start_date" id="start_date" value = '<?= $start_date ?>' > </td>
-                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="http://developer.yahoo.com/yui/examples/calendar/assets/calbtn.gif" width="18" height="18" alt="Calendar" ></button></td>
+                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
             </tr>
             <tr style="border: 0px solid transparent;">
                 <td style="border: 0px solid transparent;" width="150"> End Date: </td>
                 <td style="border: 0px solid transparent;"> <input size="15" type="text" name="end_date" id="end_date" value = '<?= $end_date ?>'/> </td>
-                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="http://developer.yahoo.com/yui/examples/calendar/assets/calbtn.gif" width="18" height="18" alt="Calendar" ></button></td>
+                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
         </table>
 
 
