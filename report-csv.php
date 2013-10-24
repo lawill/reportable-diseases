@@ -1,6 +1,6 @@
 <?php
 
-//$protect_from_forgery = true;
+$protect_from_forgery = true;
 //$page_permission = 'Regional Manager';
 $specific_permission = 'Receive Reportable Disease Reports';
 require('' . 'master.inc.php');

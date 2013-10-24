@@ -26,18 +26,18 @@ if ($rows == 0 and $start_date != "") {
     if ($rows != 0) {
         echo "<tr>
       <td>All Accounts</td>
-      <td><a href = 'report-summary.php?account_number=all&start_date=$start_date&end_date=$end_date'>Download Report</a></td>
-      <td><a href = 'generate-report.php?account_number=all&start_date=$start_date&end_date=$end_date'>Download Report</a></td>
-      <td><a href = 'report-csv.php?account_number=all&start_date=$start_date&end_date=$end_date'>Download Report</a></td>
+      <td><a href = 'report-summary.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>Download Report</a></td>
+      <td><a href = 'generate-report.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>Download Report</a></td>
+      <td><a href = 'report-csv.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>Download Report</a></td>
       </tr>";
     }
 
 
     while ($account = mysql_fetch_array($account_list_result)) {
         $account_number = $account['Client_Account'];
-        $report_string = "report-summary.php?account_number=$account_number&start_date=$start_date&end_date=$end_date";
-        $summary_string = "generate-report.php?account_number=$account_number&start_date=$start_date&end_date=$end_date";
-        $csv_string = "report-csv.php?account_number=$account_number&start_date=$start_date&end_date=$end_date";
+        $report_string = "report-summary.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
+        $summary_string = "generate-report.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
+        $csv_string = "report-csv.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
         echo "<tr>
         <td>$account_number</td>
         <td><a href = '$report_string'>Download Report</a></td>
