@@ -112,10 +112,22 @@
 
                                             $row = mysql_fetch_row($regional_manager);
                                             if ($row[0] > 0) {
-                                                echo '<td style="border: 0px solid transparent;"><input size="15" type="text" name="account"/></td>';
-                                            } else {
+                                                echo '<td style="border: 0px solid transparent;">';
+                                                if($_GET['account'] == 'all' or $_GET['account'] == "")
+                                                {
+                                                     echo '<input size="15" type="text" name="account"/></td>'; 
+                                                 
+                                                }
+                                                else
+                                                {
+                                                           echo '<input size="15" type="text" name="account" value="'.$_GET['account'].'"/></td>';                                  
+                                            }
+                                            }
+                                            else {
                                                 echo '<td style="border: 0px solid transparent;"><select name="account">';
-                                                echo "<option value='All'>All</option>";
+                                                
+                                                    echo "<option value='all'>All</option>";
+                                                    
                                                 foreach ($authorized_accounts as $account_number) {
                                                     echo '<option value="' . $account_number . '">' . $account_number . '</option>';
                                                 }
