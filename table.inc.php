@@ -5,7 +5,6 @@ $account_list_query = "SELECT DISTINCT Client_Account
              and " . implode(' AND ', $where) . "
        and Reported_Date <= '$end_date'";
 
-
 $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysql_error($invoice_db));
 //for each account_number
 

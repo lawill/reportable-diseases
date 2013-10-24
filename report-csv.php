@@ -10,9 +10,17 @@ require_once('authorize.inc.php');
 //filter/validate date information here
 
 $account_number = $_GET['account_number'];
+
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
+if($account_number != "all") {
+    if (!in_array($account_number, $authorized_accounts))
+    {
+        echo "You do not have access to view that account";
+        die();
+    }
+}
 
 header('Content-Type: text/csv; charset=utf-8');
 header("Content-Disposition: attachment; filename=$account_number-$start_date-$end_date.csv");
@@ -26,6 +34,8 @@ $views_insert = "INSERT into reportable_diseases_views
 
 $account_where = array();
 $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
+
+
 
 /* This script creates a CSV report based on a date range and an account number */
 // require(''.'master.inc.php');
