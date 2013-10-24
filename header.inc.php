@@ -34,6 +34,7 @@ $pdf->SetFont('helvetica', 'B', 12);
     $address2 = $address_info['address2'];
     $address3 = $address_info['address3'];
 */
+<<<<<<< HEAD
     $account_name_query = "SELECT name, id
                          FROM clients
                          WHERE number = 'C$account_number'";
@@ -48,6 +49,22 @@ $pdf->SetFont('helvetica', 'B', 12);
     
     $client_address_info_query = "select * from client_addresses where id = '".$client_address_id_array['client_address_id']."'";
     $client_address_info_result = mysql_query($client_address_info_query, $profile_dev_db);
+=======
+    $account_name_query = "SELECT name, client_id
+                         FROM crm_accounts
+                         WHERE number = 'C$account_number'";
+    $client_name_result = mysql_query($account_name_query, $staging_db);
+    $client_name_array = mysql_fetch_array($client_name_result);
+    $client_name = $client_name_array['name'];
+    $client_id = $client_name_array['id'];
+    
+    $client_address_id_query = "select client_address_id from client_addresses_clients where client_id = '$client_id'";
+    $client_address_id_result = mysql_query($client_address_id_query, $staging_db);
+    $client_address_id_array = mysql_fetch_array($client_address_id_result);
+    
+    $client_address_info_query = "select * from client_addresses where id = '".$cliente_address_id_array['client_address_id']."'";
+    $client_address_info_result = mysql_query($client_address_info_query, $staging_db);
+>>>>>>> 72dfeebaa0a009624e3bcb036c1672e9255b9e50
     $client_address_info = mysql_fetch_array($client_address_info_result);
     
     $address1 = $client_address_info['street'];
