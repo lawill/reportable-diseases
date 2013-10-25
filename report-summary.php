@@ -1,7 +1,7 @@
 <?php
 
 $protect_from_forgery = true;
-//$page_permission = 'Regional Manager';
+$page_permission = 'Regional Manager';
 $specific_permission = 'Receive Reportable Disease Reports';
 require('' . 'master.inc.php');
 require('authorize.inc.php');
@@ -12,8 +12,8 @@ $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts)
 /* This script geneartes a report summary based on a date range and an account number */
 
 // Use the TCPDF library to generate output
-require('/home/htdocs/mayome/dev_html/include/tcpdf/tcpdf.php');
-require('/home/htdocs/mayome/dev_html/include/tcpdf/config/lang/eng.php');
+require('/tcpdf/tcpdf.php');
+require('/tcpdf/config/lang/eng.php');
 
 //Since the header and footer are generated a page at a time, the total number of pages 
 //needs to be calculated ahead of time for the page information in the footer
@@ -47,6 +47,7 @@ class REQ_PDF extends TCPDF {
 $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
+require("date_check.php");
 require('views_update.php');
 
 $pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);

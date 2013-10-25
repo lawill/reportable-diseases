@@ -1,11 +1,5 @@
 <?php
 
-$protect_from_forgery = true;
-//$page_permission = 'Regional Manager';
-$specific_permission = 'Receive Reportable Disease Reports';
-require('' . 'master.inc.php');
-require_once('authorize.inc.php');
-
 
 //filter/validate date information here
 
@@ -13,6 +7,16 @@ $account_number = $_GET['account_number'];
 
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
+
+
+
+$protect_from_forgery = true;
+$page_permission = 'Regional Manager';
+$specific_permission = 'Receive Reportable Disease Reports';
+require('' . 'master.inc.php');
+require_once('authorize.inc.php');
+
+require("date_check.php");
 
 if($account_number != "all") {
     if (!in_array($account_number, $authorized_accounts))

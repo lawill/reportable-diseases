@@ -1,4 +1,27 @@
 <?php
+
+function _date_is_valid($str) {
+    if (substr_count($str, '-') == 2) {
+        list($y, $m, $d) = explode('-', $str);
+        return checkdate($m, $d, $y);
+    }
+
+    return false;
+}
+
+if($start_date != NULL && !_date_is_valid($start_date)) {
+    echo "Please enter valid date information";
+    die();
+}
+if(end_date != NULL && !_date_is_valid($end_date)) {
+    echo "Please enter valid date information";
+    die() ;
+}
+if($_GET['error']==='date'){
+    echo "Please enter valid date information";
+    die() ;
+}
+
 $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'

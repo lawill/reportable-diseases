@@ -1,6 +1,6 @@
 <?php
 $pdf->SetFont('helvetica', 'B', 12);
-
+$pdf->ln(20);
 //these values are used for determining which year and month to search for within the SQL statements
 
     $total_for_account_query = "SELECT COUNT(*) as Count 
