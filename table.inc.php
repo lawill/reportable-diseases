@@ -57,9 +57,9 @@ if (!$failure) {
 
         while ($account = mysql_fetch_array($account_list_result)) {
             $account_number = $account['Client_Account'];
-            $report_string = "report-summary.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
-            $summary_string = "generate-report.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
-            $csv_string = "report-csv.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token>";
+            $report_string = "report-summary.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
+            $summary_string = "generate-report.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
+            $csv_string = "report-csv.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
             echo "<tr>
         <td>$account_number</td>
         <td><a href = '$report_string'>Download Report</a></td>
