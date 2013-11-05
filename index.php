@@ -13,7 +13,7 @@ $start_date = date('Y-m-d', $_SESSION['form_data']['start_date']);
 $end_date = date('Y-m-d', $_SESSION['form_data']['end_date']);
 
 $account = trim($_SESSION['form_data']['account'], 'C');
-$where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
+$where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/second_level_template.dwt" codeOutsideHTMLIsLocked="false" -->
@@ -161,7 +161,7 @@ $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))"
                             if($_GET['account'] != "" && $_GET['account']!='all' && in_array($_GET['account'], $authorized_accounts))
                             {
                                 
-                            $where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "') AND Client_Account = '".$_GET['account']."')";
+                            $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "') AND Client_Account = '".$_GET['account']."')";
 
                             $authorized_accounts[] = $account;
 
