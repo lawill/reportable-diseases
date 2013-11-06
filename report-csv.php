@@ -47,7 +47,7 @@ $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts)
 $output = fopen('php://output', 'w');
 
 fputcsv($output, array('Agency_Name', 'Agency_State', 'Client_Account', 'Last_Name', 'First_Name', 'Test_Name',
-    'Mayo_Order_number', 'Client_Order_Number', 'Birth_Date', 'Reported_Date', 'Collection_Date'));
+    'Mayo_Order_Number', 'Client_Order_Number', 'Birth_Date', 'Reported_Date', 'Collection_Date'));
 
 
 if ($account_number == "all") {
@@ -56,16 +56,18 @@ if ($account_number == "all") {
     $where = "and Client_Account = '$account_number'";
 }
 
+
 $query_string = "SELECT Agency_Name, Agency_State, Client_Account, 
                   aes_decrypt(Last_Name, LOAD_FILE('$db_aes_key')) as Last_Name, 
                   aes_decrypt(First_Name, LOAD_FILE('$db_aes_key')) as First_Name, 
-                  Test_Name, Mayo_Order_number, Client_Order_Number, 
+                  Test_Name, Mayo_Order_Number, Client_Order_Number, 
                   aes_decrypt(Birth_Date, LOAD_FILE('$db_aes_key')) as Birth_Date, 
                   Reported_Date, Collection_Date
                   FROM reportable_diseases 
                   where Reported_Date >= '$start_date'
                   and Reported_Date <= '$end_date'
-                  $where";
+                  $where"
+                . "GROUP BY Mayo_Order_Number";
 
 $data_result = mysql_query($query_string, $invoice_db);
 while ($row = mysql_fetch_assoc($data_result))

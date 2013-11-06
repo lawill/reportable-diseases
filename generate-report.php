@@ -87,10 +87,17 @@ $pdf->ln(14);
 $pdf->Cell(500, 14, "$start_date to $end_date", '', 0, 'L', 0, 0, 1, 0, '', 'C');
 $pdf->ln(30);
 
+    $test_number_list = array();
+    array_push($test_number_list, ' ', '');
+
+//  Each account has information displayed separately
+//  This is meaningful only when the 'all' option has been set - otherwise it is simply a list of one account
 while ($account_info = mysql_fetch_array($account_list_result)) {
     $account_number = $account_info['Client_Account'];
     require('header.inc.php');
 
+    
+    
     $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
@@ -140,18 +147,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
             $test_info = mysql_fetch_array($test_info_result);
 
             $number_reported = $test_info['Count'];
-
-            //for each Test_Name
-            $test_info_query = "SELECT * FROM reportable_diseases
-                                where Reported_Date >= '$start_date'
-                                and Reported_Date <= '$end_date'
-                                and Test_Name = '$Test_Name'
-                                and Agency_Name = '$agency_name'
-                                $where
-                                ORDER BY Mayo_Order_Number";
-
-            $test_info_result = mysql_query($test_info_query);
-
+          
             $total_reported = $total_reported + $number_reported;
 
 
@@ -169,7 +165,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
             $pdf->Cell(85, 12, "Collection Date", '', 0, 'C', 0, 0, 1, 0, '', 'C');
             $pdf->ln(12);
 
-
+            $ids = join(',',$test_number_list); 
             //for each Test_Name
             $test_info_query = "SELECT RecordID, Agency_Name, Agency_State, Client_Account, 
                   aes_decrypt(Last_Name, LOAD_FILE('$db_aes_key')) as Last_Name, 
@@ -183,9 +179,8 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
                   and Test_Name = '$Test_Name'
                   and Agency_Name = '$agency_name'
                   $where
+                  and Mayo_Order_Number NOT IN ('"  . implode("','", $test_number_list) . "')
                   ORDER BY Mayo_Order_Number";
-           
-
 
             $test_info_result = mysql_query($test_info_query, $invoice_db);
 
@@ -194,6 +189,8 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
                 $first_name = $test_info["First_Name"];
                 $last_name = $test_info["Last_Name"];
                 $patient_name = $last_name . ", " . $first_name;
+                
+                array_push($test_number_list, $mml_order_number); 
 
                 $birth_date = $test_info["Birth_Date"];
                 $birth_date = strtotime($birth_date);
