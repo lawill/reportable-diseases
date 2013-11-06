@@ -135,7 +135,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
        and Agency_Name = '$agency_name'
-      $where" . " group by Test_Name asc";
+      $where" . " order by Test_Name asc";
 
             $test_result = mysql_query($test_select, $invoice_db);
 
