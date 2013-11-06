@@ -12,8 +12,8 @@ $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts)
 /* This script geneartes a report summary based on a date range and an account number */
 
 // Use the TCPDF library to generate output
-require('/tcpdf/tcpdf.php');
-require('/tcpdf/config/lang/eng.php');
+require('/home/htdocs/mayome/dev_html/include/tcpdf/tcpdf.php');
+require('/home/htdocs/mayome/dev_html/include/tcpdf/config/lang/eng.php');
 
 //Since the header and footer are generated a page at a time, the total number of pages 
 //needs to be calculated ahead of time for the page information in the footer
@@ -94,7 +94,8 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
     $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
-      $where";
+      $where"
+            . "ORDER BY Agency_Name asc";
 
     $agency_name_result = mysql_query($agency_name_query, $invoice_db);
 
