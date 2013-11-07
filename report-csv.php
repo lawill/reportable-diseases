@@ -67,7 +67,10 @@ $query_string = "SELECT Agency_Name, Agency_State, Client_Account,
                   where Reported_Date >= '$start_date'
                   and Reported_Date <= '$end_date'
                   $where"
-                . "GROUP BY Mayo_Order_Number";
+                . "GROUP BY Agency_Name, Test_Name, Mayo_Order_Number";
+
+
+
 
 $data_result = mysql_query($query_string, $invoice_db);
 while ($row = mysql_fetch_assoc($data_result))

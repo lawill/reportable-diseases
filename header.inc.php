@@ -3,14 +3,22 @@ $pdf->SetFont('helvetica', 'B', 12);
 $pdf->ln(20);
 //these values are used for determining which year and month to search for within the SQL statements
 
-    $total_for_account_query = "SELECT COUNT(*) as Count 
-                               FROM reportable_diseases 
-                               WHERE Client_Account = '$account_number' 
-                               AND Reported_Date >= '$start_date'
-                               AND Reported_Date <= '$end_date'";
-    $total_count_result = mysql_query($total_for_account_query, $invoice_db);
+    $test_select = "SELECT Test_Name, Count(*) as count from(
+                SELECT Test_Name, Count(*) FROM reportable_diseases 
+      where Reported_Date >= '$start_date'
+       and Reported_Date <= '$end_date'
+       and Client_Account = '$account_number'
+      $where" . ""
+                    . "GROUP BY Agency_Name, Test_Name, Mayo_Order_Number) as a group by Test_Name Order by Test_Name asc";
+    
+
+    $full_count_query = "SELECT SUM(count) as count from ($test_select) as a";
+
+    
+    
+    $total_count_result = mysql_query($full_count_query, $invoice_db);
     $total_count = mysql_fetch_array($total_count_result);
-    $count = $total_count['Count'];
+    $count = $total_count['count'];
 
     /*
     $account_name_query = "SELECT name, client_id

@@ -107,19 +107,26 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
         $pdf->SetFont('helvetica', 'B', 12);
 
         $pdf->Cell(350, 12, "$agency_name - $agency_state", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
-
-
+        
         $test_name_result = mysql_query($test_name_query, $invoice_db);
 
-        $test_name_query = "SELECT
- Count(Test_Name) as count from reportable_diseases 
-       where Reported_Date >= '$start_date'
+        
+        $test_select = "SELECT Test_Name, Count(*) as count from(
+                SELECT Test_Name, Count(*) FROM reportable_diseases 
+      where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
        and Agency_Name = '$agency_name'
-      $where";
+      $where" . ""
+                    . "GROUP BY Test_Name, Mayo_Order_Number) as a group by Test_Name Order by Test_Name asc";
+
+            $test_result = mysql_query($test_select, $invoice_db);
+        
+        $test_name_query = "SELECT SUM(count) as count from ($test_select) as a";
 
         $test_name_result = mysql_query($test_name_query, $invoice_db);
 
+        
+        
         while ($test_info = mysql_fetch_array($test_name_result)) {
 
 
@@ -130,15 +137,8 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
             $pdf->Cell(70, 12, "", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
             $pdf->ln(22);
 
-            $pdf->SetFont('helvetica', '', 12);
-            $test_select = "SELECT Test_Name, Count(Test_Name) as count from reportable_diseases 
-      where Reported_Date >= '$start_date'
-       and Reported_Date <= '$end_date'
-       and Agency_Name = '$agency_name'
-      $where" . " order by Test_Name asc";
-
-            $test_result = mysql_query($test_select, $invoice_db);
-
+            $pdf->SetFont('helvetica', '', 12); 
+            
 
             while ($test_data = mysql_fetch_array($test_result)) {
 

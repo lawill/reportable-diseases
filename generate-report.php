@@ -133,14 +133,16 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
 
             $Test_Name = $test_name['Test_Name'];
 
-            $test_info_query = "SELECT Count(RecordID) as Count
-    from reportable_diseases
-     where Reported_Date >= '$start_date'
-       and Reported_Date <= '$end_date'
-      and Test_Name = '$Test_Name'
-      and Agency_Name = '$agency_name'
-      $where";
-
+            $test_info_query = "SELECT COUNT(*) as Count FROM (SELECT Count(*) as Count
+                    FROM reportable_diseases 
+                  where Reported_Date >= '$start_date'
+                  and Reported_Date <= '$end_date'
+                  and Test_Name = '$Test_Name'
+                  and Agency_Name = '$agency_name'
+                  $where
+                  GROUP BY Mayo_Order_Number
+                  ORDER BY Mayo_Order_Number) as a";
+      
 
             $test_info_result = mysql_query($test_info_query, $invoice_db);
 
@@ -179,7 +181,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
                   and Test_Name = '$Test_Name'
                   and Agency_Name = '$agency_name'
                   $where
-                  and Mayo_Order_Number NOT IN ('"  . implode("','", $test_number_list) . "')
+                  GROUP BY Mayo_Order_Number
                   ORDER BY Mayo_Order_Number";
 
             $test_info_result = mysql_query($test_info_query, $invoice_db);
