@@ -87,9 +87,10 @@ $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysq
 while ($account_info = mysql_fetch_array($account_list_result)) {
     $account_number = $account_info['Client_Account'];
     $where = "AND Client_Account = '$account_number'";
+    $summary = true;
     require('header.inc.php');
 
-    $pdf->ln(10);
+    //$pdf->ln(10);
 
     $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
       where Reported_Date >= '$start_date'
@@ -97,16 +98,16 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
       $where"
             . "ORDER BY Agency_Name asc";
 
-    $agency_name_result = mysql_query($agency_name_query, $invoice_db);
+   // $agency_name_result = mysql_query($agency_name_query, $invoice_db);
 
-    while ($agency_info = mysql_fetch_array($agency_name_result)) {
-        $pdf->ln(16);
-        $agency_name = $agency_info['Agency_Name'];
-        $agency_state = $agency_info['Agency_State'];
+    //while ($agency_info = mysql_fetch_array($agency_name_result)) {
+        //$pdf->ln(16);
+        //$agency_name = $agency_info['Agency_Name'];
+        //$agency_state = $agency_info['Agency_State'];
 
         $pdf->SetFont('helvetica', 'B', 12);
 
-        $pdf->Cell(350, 12, "$agency_name - $agency_state", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
+        //$pdf->Cell(350, 12, "", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
         
         $test_name_result = mysql_query($test_name_query, $invoice_db);
 
@@ -115,7 +116,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
                 SELECT Test_Name, Count(*) FROM reportable_diseases 
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
-       and Agency_Name = '$agency_name'
+      
       $where" . ""
                     . "GROUP BY Test_Name, Mayo_Order_Number) as a group by Test_Name Order by Test_Name asc";
 
@@ -149,7 +150,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
             }
         }
     }
-}
+
 $pdf->ln(12);
 $pdf->SetFont('helvetica', 'B', 12);
 $pdf->Cell(350, 12, "Total", '', 0, 'R', 0, 0, 1, 0, '', 'C');

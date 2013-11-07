@@ -8,9 +8,9 @@ $pdf->ln(20);
       where Reported_Date >= '$start_date'
        and Reported_Date <= '$end_date'
        and Client_Account = '$account_number'
-      $where" . ""
+       " . ""
                     . "GROUP BY Agency_Name, Test_Name, Mayo_Order_Number) as a group by Test_Name Order by Test_Name asc";
-    
+
 
     $full_count_query = "SELECT SUM(count) as count from ($test_select) as a";
 
@@ -69,7 +69,12 @@ $pdf->ln(20);
     $pdf->Cell(500, 14, "Client # $account_number", '', 0, 'L', 0, 0, 1, 0, '', 'C');
     $pdf->ln(14);
     $pdf->Cell(350, 14, "$address1", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+    if (!$summary) {
     $pdf->Cell(150, 14, "Report Total: Number Reported = $count", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+    }
+    else {
+        $pdf->Cell(150, 14, "", '', 0, 'L', 0, 0, 1, 0, '', 'C');
+    }
     $pdf->ln(14);
     if (!empty($address2)) {
         $pdf->Cell(500, 14, "$address2", '', 0, 'L', 0, 0, 1, 0, '', 'C');
@@ -79,7 +84,14 @@ $pdf->ln(20);
             $pdf->ln(14);
         }
     }
-    $pdf->Cell(500, 14, "$city, $state $postal_code", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
-    $pdf->ln(14);
+    if (!$summary) {
+        $pdf->Cell(500, 14, "$city, $state $postal_code", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
+        $pdf->ln(14);
+    }
+    else {
+         $pdf->Cell(350, 14, "$city, $state $postal_code", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
+    }
+        
+    
 
 ?>
