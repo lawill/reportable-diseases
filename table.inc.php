@@ -39,7 +39,8 @@ if (!$failure) {
           <td><strong>Account Number</strong></td>
           <td><strong>Available Reports</strong></td>
         </tr>';
-        if ($rows != 0) {
+        if ($rows != 0 && $_GET['account'] == "") {
+            if($_GET['account'] == "") {
             echo 
       "<tr>
         <td>All Accounts</td>
@@ -53,6 +54,7 @@ if (!$failure) {
         <td></td>
         <td><a href = 'report-csv.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>CSV Report</a></td>
       </tr>";
+        }
         }
 
         $bg = true;
