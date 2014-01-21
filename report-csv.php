@@ -1,6 +1,13 @@
 <?php
 
 
+
+$protect_from_forgery = true;
+$page_permission = 'Regional Manager';
+$specific_permission = 'Receive Reportable Disease Reports';
+require('' . 'master.inc.php');
+require_once('authorize.inc.php');
+
 //filter/validate date information here
 
 $account_number = $_GET['account_number'];
@@ -8,13 +15,6 @@ $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 
-
-
-$protect_from_forgery = true;
-$page_permission = 'Regional Manager';
-$specific_permission = 'Receive Reportable Disease Reports';
-require('' . 'master.inc.php');
-require_once('authorize.inc.php');
 
 require("date_check.php");
 
@@ -31,10 +31,6 @@ header("Content-Disposition: attachment; filename=$account_number-$start_date-$e
 
 header("Pragma: public");
 header("Expires: 0");
-
-$where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
-$views_insert = "INSERT into reportable_diseases_views
-                   VALUES";
 
 $account_where = array();
 $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";

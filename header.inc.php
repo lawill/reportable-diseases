@@ -42,20 +42,22 @@ $pdf->ln(20);
     $address2 = $address_info['address2'];
     $address3 = $address_info['address3'];
 */
-    $account_name_query = "SELECT name, id
-                         FROM clients
+    $account_name_query = "SELECT name, id, street, street2, city, state, postal_code
+                         FROM clients 
+                         join client_addresses_clients on client_addresses_clients.client_id = clients.id 
+                         join client_addresses on client_addresses.id = clients.id
                          WHERE number = 'C$account_number'";
-    $client_name_result = mysql_query($account_name_query, $profile_dev_db);
+    $client_name_result = mysql_query($account_name_query, $profile_db);
     $client_name_array = mysql_fetch_array($client_name_result);
     $client_name = $client_name_array['name'];
     $client_id = $client_name_array['id'];
 
     $client_address_id_query = "select client_address_id from client_addresses_clients where client_id = '$client_id'";
-    $client_address_id_result = mysql_query($client_address_id_query, $profile_dev_db);
+    $client_address_id_result = mysql_query($client_address_id_query, $profile_db);
     $client_address_id_array = mysql_fetch_array($client_address_id_result);
     
     $client_address_info_query = "select * from client_addresses where id = '".$client_address_id_array['client_address_id']."'";
-    $client_address_info_result = mysql_query($client_address_info_query, $profile_dev_db);
+    $client_address_info_result = mysql_query($client_address_info_query, $profile_db);
     $client_address_info = mysql_fetch_array($client_address_info_result);
     
     $address1 = $client_address_info['street'];

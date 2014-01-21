@@ -110,16 +110,7 @@ require_once(''.'master.inc.php');
                     </div>
                     <div id="pagebody"><!-- InstanceBeginEditable name="pageBody" -->
                         <p><a href="index.php" class="btndownload">Access Reportable Diseases Portal<br /></a>
-                            <?php
-                            $permission = "Quality Reports Graphical Dashboards";
-                            $dashboard_access = mysql_query("SELECT COUNT(*) AS dashboard
-                            FROM permission_assignments join permissions on permission_assignments.permission_id = permissions.id
-                            WHERE person_id = '{$_SESSION['user']['id']}' AND label = '$permission'", $profile_dev_db);
-                            $row = mysql_fetch_row($dashboard_access);
-                            if($row[0] > 0) {
-                            echo "<p><a href='' class='btndownload'>Graphical Quality Dashboard<br /></a>";
-                            }
-                            ?>
+                            
                             <!-- InstanceEndEditable --></div>
                 </div>
                 <hr />

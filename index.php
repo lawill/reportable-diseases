@@ -143,19 +143,14 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
                         </div>
                         <br>
 
-                            <form action="index.php" method="get" onsubmit="return checkDateValues();"></a>
+                            <form action="index.php" method="get" onsubmit="return checkDateValues();">
                                 <?php
                                 $alignment = "horizontal";
                                 $font_size = "12";
                                 include("calendar.inc.php");
                                 ?>
                             </form>
-                            <tr>
-                                <table>
-                                   
-                                        <table>
-                                            
-
+                           
                             <?php
                             
                             if($_GET['account'] != "" && $_GET['account']!='all' && in_array($_GET['account'], $authorized_accounts))

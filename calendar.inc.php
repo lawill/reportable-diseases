@@ -67,16 +67,16 @@
     if ($alignment == "vertical") {
         ?> 
 
-        <table cellpadding="0" width="80%" cellspacing ="0" style="border: 0px solid transparent;"> 
-            <tr style="border: 0px solid transparent;">
-                <td style="border: 0px solid transparent;" width="150"> Start Date: </td>
-                <td style="border: 0px solid transparent;"> <input size="15" type="text" name="start_date" id="start_date" value = '<?= $start_date ?>' readonly> </td>
-                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
+        <table cellpadding="0" width="80%" cellspacing ="0" class="borderless"> 
+            <tr>
+                <td  width="150"> Start Date: </td>
+                <td > <input size="15" type="text" name="start_date" id="start_date" value = "<?= $start_date ?>" readonly="readonly" /> </td>
+                <td > <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
             </tr>
-            <tr style="border: 0px solid transparent;">
-                <td style="border: 0px solid transparent;" width="150"> End Date: </td>
-                <td style="border: 0px solid transparent;"> <input size="15" type="text" name="end_date" id="end_date" value = '<?= $end_date ?>' readonly> </td>
-                <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
+            <tr >
+                <td  width="150"> End Date: </td>
+                <td > <input size="15" type="text" name="end_date" id="end_date" value = "<?= $end_date ?>" readonly="readonly" /> </td>
+                <td > <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
             </tr>
 
 
@@ -85,21 +85,21 @@
         } else {
             ?>
 
-            <table cellpadding="0" width="60%" cellspacing ="0" style="border: 0px solid transparent;"> 
-                <tr style="border: 0px solid transparent;">
-                    <td style="border: 0px solid transparent;" width="150"> Start Date: </td>
-                    <td style="border: 0px solid transparent;"> <input size="15" type="text" name="start_date" id="start_date" value = '<?= $start_date ?>' readonly> </td>
-                    <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
-                    <td style="border: 0px solid transparent;" width="50"></td>
-                    <td style="border: 0px solid transparent;" width="150"> End Date: </td>
-                    <td style="border: 0px solid transparent;"> <input size="15" type="text" name="end_date" id="end_date" value = '<?= $end_date ?>' readonly> </td>
-                    <td style="border: 0px solid transparent;"> <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
+            <table cellpadding="0" width="60%" cellspacing ="0" class="borderless"> 
+                <tr >
+                    <td  width="150"> Start Date: </td>
+                    <td > <input size="15" type="text" name="start_date" id="start_date" value = "<?= $start_date ?>" readonly="readonly" /> </td>
+                    <td > <button type="button" id="calendarButton" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
+                    <td  width="50">&nbsp;</td>
+                    <td  width="150"> End Date: </td>
+                    <td > <input size="15" type="text" name="end_date" id="end_date" value = "<?= $end_date ?>" readonly="readonly" /> </td>
+                    <td > <button type="button" id="calendarButton2" title="Show Calendar" class="cal_button"><img src="calendar-32.gif" width="18" height="18" alt="Calendar" ></button></td>
 
                 </tr>
                 <?php
             }
             ?>
-            <tr> <td style="border: 0px solid transparent;"> Account Number </td>
+            <tr> <td > Account Number </td>
 
                 <?php
                 $permission_check_query = " SELECT COUNT(*) as count 
@@ -110,15 +110,15 @@
                 $regional_manager = mysql_query($permission_check_query, $profile_dev_db);
 
                 $row = mysql_fetch_row($regional_manager);
-                if ($row[0] > 0) {
-                    echo '<td style="border: 0px solid transparent;">';
+                if ($admin_view) {
+                    echo '<td >';
                     if ($_GET['account'] == 'all' or $_GET['account'] == "") {
                         echo '<input size="15" type="text" name="account"/></td>';
                     } else {
                         echo '<input size="15" type="text" name="account" value="' . $_GET['account'] . '"/></td>';
                     }
                 } else {
-                    echo '<td style="border: 0px solid transparent;"><select name="account">';
+                    echo '<td ><select name="account">';
 
                     echo "<option value='all'>All</option>";
 
@@ -130,9 +130,9 @@
                 ?>
             </tr>
         </table>
-        <table width = "60%" cellpadding="0" cellspacing ="0" style="border: 0px solid transparent;">
-            <tr  style="border: 0px solid transparent;">
-                <td style="border: 0px solid transparent; text-align: center;">
+        <table width = "60%" cellpadding="0" cellspacing ="0" class="borderless">
+            <tr  >
+                <td>
                     <input type="Submit" value="Display Reports">
                 </td>
             </tr>

@@ -7,10 +7,8 @@ require('' . 'master.inc.php');
 
 require('authorize.inc.php');
 
-$admin_view = ($permissions[$_SESSION['user']['role']] >= $permissions['Regional Manager']);
-
 // Use the TCPDF library to generate output
-require('/home/htdocs/mayome/dev_html/include/tcpdf/tcpdf.php');
+require('tcpdf/tcpdf.php');
 require('/home/htdocs/mayome/dev_html/include/tcpdf/config/lang/eng.php');
 
 
@@ -35,7 +33,7 @@ class REQ_PDF extends TCPDF {
         $this->Cell(500, 8, "Unit at 800-533-1710 extension: 8-7260.", "", 0, 'L', 0, 0, 1, 0, '', 'C');
         $this->ln(9);
         $this->SetFont('helvetica', '', 7);
-        $this->Cell(500, 7, "Date Printed: " . date("m/d/Y", strtotime("-0 month")), "", 0, 'L', 0, 0, 1, 0, '', 'C');
+        $this->Cell(500, 7, "Date Printed: " . date("m/d/Y"), "", 0, 'L', 0, 0, 1, 0, '', 'C');
         $this->ln(7);
         $this->Cell(500, 7, "MML Reportable Disease Report", "", 0, 'L', 0, 0, 1, 0, '', 'C');
     }
@@ -62,7 +60,7 @@ if ($account_number == "all") {
     $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'
-             and Client_Account = $account_number
+             and Client_Account = '$account_number'
        and Reported_Date <= '$end_date'";
 }
 
@@ -78,7 +76,7 @@ $pdf->SetLineWidth(0.5);
 
 
 
-$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+$pdf->Image('images/test-catalog/mml-logo-print.png', 48, 50, 172);
 
 $pdf->ln(54);
 $pdf->SetFont('helvetica', 'B', 12);
