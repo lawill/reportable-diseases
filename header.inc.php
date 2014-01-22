@@ -42,29 +42,20 @@ $pdf->ln(20);
     $address2 = $address_info['address2'];
     $address3 = $address_info['address3'];
 */
-    $account_name_query = "SELECT name, id, street, street2, city, state, postal_code
+    $client_info_query = "SELECT name, clients.id, street, street2, city, state, postal_code
                          FROM clients 
                          join client_addresses_clients on client_addresses_clients.client_id = clients.id 
                          join client_addresses on client_addresses.id = clients.id
                          WHERE number = 'C$account_number'";
-    $client_name_result = mysql_query($account_name_query, $profile_db);
-    $client_name_array = mysql_fetch_array($client_name_result);
-    $client_name = $client_name_array['name'];
-    $client_id = $client_name_array['id'];
-
-    $client_address_id_query = "select client_address_id from client_addresses_clients where client_id = '$client_id'";
-    $client_address_id_result = mysql_query($client_address_id_query, $profile_db);
-    $client_address_id_array = mysql_fetch_array($client_address_id_result);
     
-    $client_address_info_query = "select * from client_addresses where id = '".$client_address_id_array['client_address_id']."'";
-    $client_address_info_result = mysql_query($client_address_info_query, $profile_db);
-    $client_address_info = mysql_fetch_array($client_address_info_result);
-    
-    $address1 = $client_address_info['street'];
-    $address2 = $client_address_info['street2'];
-    $city = $client_address_info['city'];
-    $state = $client_address_info['state'];
-    $postal_code = $client_address_info['postal_code'];
+    $client_into_result = mysql_query($account_name_query, $profile_db);
+    $client_info = mysql_fetch_array($client_name_result);
+    $client_name = $client_info['name'];
+    $address1 = $client_info['street'];
+    $address2 = $client_info['street2'];
+    $city = $client_info['city'];
+    $state = $client_info['state'];
+    $postal_code = $client_info['postal_code'];
 
     $pdf->Cell(500, 14, "$client_name", '', 0, 'L', 0, 0, 1, 0, '', 'C');
     $pdf->ln(14);

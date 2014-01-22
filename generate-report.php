@@ -8,8 +8,9 @@ require('' . 'master.inc.php');
 require('authorize.inc.php');
 
 // Use the TCPDF library to generate output
+//needs to be changes when it's updating on the site
 require('tcpdf/tcpdf.php');
-require('/home/htdocs/mayome/dev_html/include/tcpdf/config/lang/eng.php');
+require('tcpdf/config/lang/eng.php');
 
 
 //Since the header and footer are generated a page at a time, the total number of pages 
@@ -60,7 +61,8 @@ if ($account_number == "all") {
     $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'
-             and Client_Account = '$account_number'
+             and Client_Account = $account_number
+             and " . implode(' AND ', $account_where) . "
        and Reported_Date <= '$end_date'";
 }
 
@@ -76,7 +78,7 @@ $pdf->SetLineWidth(0.5);
 
 
 
-$pdf->Image('images/test-catalog/mml-logo-print.png', 48, 50, 172);
+$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
 
 $pdf->ln(54);
 $pdf->SetFont('helvetica', 'B', 12);

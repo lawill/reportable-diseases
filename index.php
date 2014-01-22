@@ -23,6 +23,11 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
         <title>Reportable Diseases Portal - Mayo Medical Laboratories</title>
         <meta name="keywords" content="Mayo Medical Laboratories, MML, mission, esoteric, testing, laboratory services, " />
         <meta name="description" content="Our mission is to support the local delivery of laboratory services through the provision of exceptional reference laboratory services and by providing support services which facilitate and augment community integration efforts. " />
+        
+        <!-- These will need to get changed to include path -->
+        <link rel="stylesheet" href="calendarview.css">
+            <script src="calendarview.js"></script>
+            
         <!-- InstanceEndEditable -->
         <link rel="stylesheet" type="text/css" href="../../css/print.css" media="print" />
         <link rel="stylesheet" type="text/css" href="../../css/mml.css" media="screen" />
@@ -34,10 +39,7 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
         <link rel="stylesheet" type="text/css" href="../../css/quality_reports.css" />
 
 
-        <!-- These will need to get changed to include path -->
-        <link rel="stylesheet" href="calendarview.css">
-            <script src="prototype.js"></script>
-            <script src="calendarview.js"></script>
+
 
     </head>
     <body>
