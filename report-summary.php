@@ -25,6 +25,8 @@ class REQ_PDF extends TCPDF {
     }
 
     function Footer() {
+
+        global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
         //$page_number = $this->PageNo();
 
 
@@ -46,7 +48,7 @@ $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 require("date_check.php");
-require('views_update.php');
+//require('views_update.php');
 
 $pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
 $pdf->SetMargins(48, 50, 70);
@@ -84,44 +86,19 @@ $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysq
 
 while ($account_info = mysql_fetch_array($account_list_result)) {
     $account_number = $account_info['Client_Account'];
-    $where = "AND Client_Account = '$account_number'";
+
     $summary = true;
     require('header.inc.php');
 
     //$pdf->ln(10);
 
-    $agency_name_query = "SELECT Distinct Agency_Name, Agency_State FROM reportable_diseases
-      where Reported_Date >= '$start_date'
-       and Reported_Date <= '$end_date'
-      $where"
-            . "ORDER BY Agency_Name asc";
-
-   // $agency_name_result = mysql_query($agency_name_query, $invoice_db);
-
-    //while ($agency_info = mysql_fetch_array($agency_name_result)) {
-        //$pdf->ln(16);
-        //$agency_name = $agency_info['Agency_Name'];
-        //$agency_state = $agency_info['Agency_State'];
+    
 
         $pdf->SetFont('helvetica', 'B', 12);
 
-        //$pdf->Cell(350, 12, "", 'B', 0, 'L', 0, 0, 1, 0, '', 'C');
-        
-        $test_name_result = mysql_query($test_name_query, $invoice_db);
-
-        
-        $test_select = "SELECT Test_Name, Count(*) as count from(
-                SELECT Test_Name, Count(*) FROM reportable_diseases 
-      where Reported_Date >= '$start_date'
-       and Reported_Date <= '$end_date'
-      
-      $where" . ""
-                    . "GROUP BY Test_Name, Mayo_Order_Number) as a group by Test_Name Order by Test_Name asc";
-
-            $test_result = mysql_query($test_select, $invoice_db);
+        $test_result = mysql_query($test_select, $invoice_db);
         
         $test_name_query = "SELECT SUM(count) as count from ($test_select) as a";
-
         $test_name_result = mysql_query($test_name_query, $invoice_db);
 
         
@@ -129,16 +106,18 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
         while ($test_info = mysql_fetch_array($test_name_result)) {
 
 
-            $count = $test_info['count'];
-            $total_tests = $total_tests + $count;
-
-            $pdf->Cell(80, 12, "$count ", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
+            $pdf->Cell(80, 12, "$total_count ", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
             $pdf->Cell(70, 12, "", 'B', 0, 'R', 0, 0, 1, 0, '', 'C');
             $pdf->ln(22);
 
-            $pdf->SetFont('helvetica', '', 12); 
+            $pdf->SetFont('helvetica', '', 12);              
             
-
+            $test_select = "SELECT Test_Name, COUNT(DISTINCT Mayo_Order_Number) AS Count
+                            FROM reportable_diseases
+                            WHERE Reported_Date BETWEEN '$start_date' AND '$end_date'
+                                AND Client_Account = '$account_number'
+                            GROUP BY Test_Name";
+             
             while ($test_data = mysql_fetch_array($test_result)) {
 
                 $pdf->Cell(350, 14, $test_data['Test_Name'], '', 0, 'L', 0, 0, 1, 0, '', 'C');
@@ -152,7 +131,7 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
 $pdf->ln(12);
 $pdf->SetFont('helvetica', 'B', 12);
 $pdf->Cell(350, 12, "Total", '', 0, 'R', 0, 0, 1, 0, '', 'C');
-$pdf->Cell(80, 12, "$total_tests ", '', 0, 'R', 0, 0, 1, 0, '', 'C');
+$pdf->Cell(80, 12, "$total_count ", '', 0, 'R', 0, 0, 1, 0, '', 'C');
 $pdf->ln(12);
 $pdf->ln(12);
 

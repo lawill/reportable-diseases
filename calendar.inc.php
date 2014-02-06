@@ -102,14 +102,7 @@
             <tr> <td > Account Number </td>
 
                 <?php
-                $permission_check_query = " SELECT COUNT(*) as count 
-                                            FROM people_roles join roles on people_roles.role_id = roles.id 
-                                            where (roles.name = 'Administrator' or roles.name = 'Regional Manager') 
-                                            AND people_roles.person_id = '{$_SESSION['user']['id']}'";
-
-                $regional_manager = mysql_query($permission_check_query, $profile_dev_db);
-
-                $row = mysql_fetch_row($regional_manager);
+                
                 if ($admin_view) {
                     echo '<td >';
                     if ($_GET['account'] == 'all' or $_GET['account'] == "") {

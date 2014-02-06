@@ -9,16 +9,16 @@ $specific_permission = 'Receive Reportable Disease Reports';
 require_once('' . 'master.inc.php');
 
 require_once('authorize.inc.php');
-$start_date = date('Y-m-d', $_SESSION['form_data']['start_date']);
-$end_date = date('Y-m-d', $_SESSION['form_data']['end_date']);
+$start_date = date('Y-m-d', $_GET['form_data']['start_date']);
+$end_date = date('Y-m-d', $_GET['form_data']['end_date']);
 
-$account = trim($_SESSION['form_data']['account'], 'C');
+$account = trim($_GET['form_data']['account'], 'C');
 $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/second_level_template.dwt" codeOutsideHTMLIsLocked="false" -->
     <head>
-
+        <?php include(''.'javascript.inc.php'); ?>
         <!-- InstanceBeginEditable name="doctitle" -->
         <title>Reportable Diseases Portal - Mayo Medical Laboratories</title>
         <meta name="keywords" content="Mayo Medical Laboratories, MML, mission, esoteric, testing, laboratory services, " />

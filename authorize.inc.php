@@ -16,6 +16,6 @@ while (list($authorized_account) = mysql_fetch_row($get_authorized_accounts)) {
     $authorized_accounts[] = trim($authorized_account, 'C');
 }
 $admin_view = ($permissions[$_SESSION['user']['role']] >= $permissions['Regional Manager']);
-$where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
+//$where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
 
 ?>

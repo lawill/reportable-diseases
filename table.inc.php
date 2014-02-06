@@ -10,10 +10,8 @@ function _date_is_valid($str) {
 }
 
 $failure = false;
-if (!empty($_SERVER["QUERY_STRING"]) && !_date_is_valid($start_date)) {
-    $failure = true;
-}
-if (!empty($_SERVER["QUERY_STRING"]) && !_date_is_valid($end_date)) {
+
+if ((!_date_is_valid($end_date) && $end_date !="") || (!_date_is_valid($start_date) && $start_date != "")) {
     $failure = true;
 }
 if ($_GET['error'] === 'date') {
@@ -39,20 +37,17 @@ if (!$failure) {
           <td><strong>Account Number</strong></td>
           <td><strong>Available Reports</strong></td>
         </tr>';
-        if ($rows != 0 && $_GET['account'] == "") {
-            if($_GET['account'] == "") {
+        if ($rows != 0 && ($_GET['account'] == "" || $_GET['account'] == "all")) {
+            if($_GET['account'] == "" || $_GET['account'] == "all") {
             echo 
       "<tr>
         <td>All Accounts</td>
-        <td><a href = 'report-summary.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>Summary Report [PDF]</a></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><a href = 'generate-report.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>Detailed Report [PDF]</a></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><a href = 'report-csv.php?account_number=all&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token'>CSV Report</a></td>
+        <td><a href = 'report-summary.php?account_number=all&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token'>Summary Report [PDF]</a>
+            <br>
+        <a href = 'generate-report.php?account_number=all&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token'>Detailed Report [PDF]</a>
+            <br>
+        <a href = 'report-csv.php?account_number=all&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token'>CSV Report</a>
+            </td>
       </tr>";
         }
         }
@@ -60,20 +55,17 @@ if (!$failure) {
         $bg = true;
         while ($account = mysql_fetch_array($account_list_result)) {
             $account_number = $account['Client_Account'];
-            $summary_report_string = "report-summary.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
-            $detailed_report_string = "generate-report.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
-            $csv_string = "report-csv.php?account_number=$account_number&start_date=$start_date&end_date=$end_date&csrf_token=$csrf_token";
+            $summary_report_string = "report-summary.php?account_number=$account_number&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token";
+            $detailed_report_string = "generate-report.php?account_number=$account_number&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token";
+            $csv_string = "report-csv.php?account_number=$account_number&amp;start_date=$start_date&amp;end_date=$end_date&amp;csrf_token=$csrf_token";
             echo "
         <tr>
             <td>$account_number</td>
-            <td><a href = '$summary_report_string'>Summary Report [PDF]</a></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><a href = '$detailed_report_string'>Detailed Report [PDF]</a></td>
-        </tr>
-            <td></td>
-            <td><a href = '$csv_string'>CSV Report</a></td>
+            <td><a href = '$summary_report_string'>Summary Report [PDF]</a>"
+                    . "<br>"
+                    . "<a href = '$detailed_report_string'>Detailed Report [PDF]</a>"
+                    . "<br>"
+                    . "<a href = '$csv_string'>CSV Report</a></td>
         </tr>";
             //echo $link_string;
         }

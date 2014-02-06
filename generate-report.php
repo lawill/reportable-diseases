@@ -49,7 +49,7 @@ $account_number = $_GET['account_number'];
 $start_date = $_GET['start_date'];
 $end_date = $_GET['end_date'];
 require("date_check.php");
-require('views_update.php');
+//require('views_update.php');
 
 if ($account_number == "all") {
     $account_list_query = "SELECT DISTINCT Client_Account
@@ -78,7 +78,7 @@ $pdf->SetLineWidth(0.5);
 
 
 
-$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+$pdf->Image('../../images/test-catalog/mml-logo-print.png', 48, 50, 172);
 
 $pdf->ln(54);
 $pdf->SetFont('helvetica', 'B', 12);
@@ -251,5 +251,12 @@ $end_date = $_GET['end_date'];
 header("Pragma: public");
 header("Expires: 0");
 
+$view_insert = "INSERT INTO reportable_diseases_views (person_id, email, account_number, report_type) "
+        . "VALUES ('".$_SESSION['user']['id']."', "
+        . "'".$_SESSION['user']['email']."', "
+        . "'$account_number.', "
+        . "'Detailed Report')";
+
+mysql_query($view_insert, $invoice_db);
 $pdf->Output($account_number . '-' . $start_date . '-' . $end_date . '.pdf', 'I');
 ?>
