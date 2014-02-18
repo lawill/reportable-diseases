@@ -23,7 +23,6 @@ class REQ_PDF extends TCPDF {
     }
 
     function Footer() {
-        global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
         //$page_number = $this->PageNo();
 
 

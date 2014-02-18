@@ -36,10 +36,7 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
         <link rel="stylesheet" type="text/css" href="../../css/user_styles.css" media="all" />
         <link rel="stylesheet" type="text/css" href="../../css/languages.css" media="all" />
         <link rel="stylesheet" type="text/css" href="../../css/test_catalog.css" />
-        <link rel="stylesheet" type="text/css" href="../../css/quality_reports.css" />
-
-
-
+        
 
     </head>
     <body>
@@ -154,13 +151,17 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
                             </form>
                            
                             <?php
-                            
-                            if($_GET['account'] != "" && $_GET['account']!='all' && in_array($_GET['account'], $authorized_accounts))
+                            if($_GET['account'] != "" && $_GET['account']!='all' && $admin_view) {
+                                $where = "Client_Account = '".$_GET['account']."'" ;
+                                $authorized_accounts[] = $_GET['account'];
+                               
+                            }
+                            else if($_GET['account'] != "" && $_GET['account']!='all' && in_array($_GET['account'], $authorized_accounts))
                             {
                                 
                             $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "') AND Client_Account = '".$_GET['account']."')";
 
-                            $authorized_accounts[] = $account;
+                            $authorized_accounts[] = $_GET['account'];
 
                             }
                             include('table.inc.php');

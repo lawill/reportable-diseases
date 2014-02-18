@@ -19,7 +19,7 @@ require_once('authorize.inc.php');
 require("date_check.php");
 
 if($account_number != "all") {
-    if (!in_array($account_number, $authorized_accounts))
+    if (!in_array($account_number, $authorized_accounts) && !$admin_view)
     {
         echo "You do not have access to view that account";
         die();
