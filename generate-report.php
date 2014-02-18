@@ -24,6 +24,8 @@ class REQ_PDF extends TCPDF {
 
     function Footer() {
         //$page_number = $this->PageNo();
+        // 
+        // global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
 
 
         $this->SetY(745);
@@ -56,18 +58,28 @@ if ($account_number == "all") {
       where Reported_Date >= '$start_date'
              and " . implode(' AND ', $account_where) . "
        and Reported_Date <= '$end_date'";
-} else {
+} else if($admin_view)  
+{
     $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'
-             and Client_Account = $account_number
+             and Client_Account = '$account_number'
+             
+       and Reported_Date <= '$end_date'";
+}
+else {
+    $account_list_query = "SELECT DISTINCT Client_Account
+      FROM reportable_diseases
+      where Reported_Date >= '$start_date'
+             and Client_Account = '$account_number'
              and " . implode(' AND ', $account_where) . "
        and Reported_Date <= '$end_date'";
 }
-
-
 $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysql_error($invoice_db));
 
+if(mysql_num_rows($account_list_result) < 1) {
+     header("Location: index.php");
+}
 
 $pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
 $pdf->SetMargins(48, 50, 70);
@@ -250,10 +262,11 @@ $end_date = $_GET['end_date'];
 header("Pragma: public");
 header("Expires: 0");
 
+// Insert users activity into security file
 $view_insert = "INSERT INTO reportable_diseases_views (person_id, email, account_number, report_type) "
         . "VALUES ('".$_SESSION['user']['id']."', "
         . "'".$_SESSION['user']['email']."', "
-        . "'$account_number.', "
+        . "'$account_number', "
         . "'Detailed Report')";
 
 mysql_query($view_insert, $invoice_db);

@@ -25,7 +25,8 @@ class REQ_PDF extends TCPDF {
     }
 
     function Footer() {
-        global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
+        //Removed the followwing Global - KGE
+        //global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
 
         //$page_number = $this->PageNo();
 
@@ -78,7 +79,7 @@ if ($account_number == "all") {
     $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'
-             and Client_Account = $account_number
+             and Client_Account = '$account_number'
              
        and Reported_Date <= '$end_date'";
 }
@@ -86,7 +87,7 @@ else {
     $account_list_query = "SELECT DISTINCT Client_Account
       FROM reportable_diseases
       where Reported_Date >= '$start_date'
-             and Client_Account = $account_number
+             and Client_Account = '$account_number'
              and " . implode(' AND ', $account_where) . "
        and Reported_Date <= '$end_date'";
 }
@@ -155,12 +156,18 @@ $pdf->SetFont('helvetica', '', 9);
 $pdf->Cell(500, 10, "This is a list of test results Mayo Medical Laboratories reported to your State Health Department. It is not intended to replace", "", 0, 'L', 0, 0, 1, 0, '', 'C');
 $pdf->ln(12);
 $pdf->Cell(500, 10, "your obligation to report, nor is it a guarantee that all applicable test results were reported.", "", 0, 'L', 0, 0, 1, 0, '', 'C');
+//
+// Insert users activity into security file
+//
+
+$account_number = $_GET['account_number'];
 
 $view_insert = "INSERT INTO reportable_diseases_views (person_id, email, account_number, report_type) "
         . "VALUES ('".$_SESSION['user']['id']."', "
         . "'".$_SESSION['user']['email']."', "
-        . "'$account_number.', "
+        . "'$account_number', "
         . "'Summary Report')";
+mysql_query($view_insert, $invoice_db);
 
 // Set PDF metadata
 $pdf->SetCreator(PDF_CREATOR);
