@@ -25,10 +25,6 @@ class REQ_PDF extends TCPDF {
     }
 
     function Footer() {
-        //Removed the followwing Global - KGE
-        //global $mnemonic, $test_name, $unit_code, $company_name, $acct_id_footer;
-
-        //$page_number = $this->PageNo();
 
 
         $this->SetY(745);
@@ -59,7 +55,7 @@ $pdf->SetLineWidth(0.5);
 
 
 
-$pdf->Image('shield.jpg', 48, 50, 172, 54, 'JPG', '', '', true, 150, '', false, false, 0, false, false, false);
+$pdf->Image('../../images/test-catalog/mml-logo-print.png', 48, 50, 172);
 
 $pdf->ln(54);
 $pdf->SetFont('helvetica', 'B', 12);
@@ -96,6 +92,7 @@ $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysq
 
 if(mysql_num_rows($account_list_result) < 1) {
     header("Location: index.php");
+    exit();
 }
 
 while ($account_info = mysql_fetch_array($account_list_result)) {

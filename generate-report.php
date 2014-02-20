@@ -79,6 +79,7 @@ $account_list_result = mysql_query($account_list_query, $invoice_db) or die(mysq
 
 if(mysql_num_rows($account_list_result) < 1) {
      header("Location: index.php");
+     exit();
 }
 
 $pdf = new REQ_PDF('Portrait', 'pt', 'Letter', true, 'UTF-8', false);
@@ -144,17 +145,19 @@ while ($account_info = mysql_fetch_array($account_list_result)) {
 
             $Test_Name = $test_name['Test_Name'];
 
-            $test_info_query = "SELECT COUNT(*) as Count FROM (SELECT Count(*) as Count
+
+       
+      
+
+          $test_info_query = "SELECT COUNT(DISTINCT Mayo_Order_Number) as Count
                     FROM reportable_diseases 
                   where Reported_Date >= '$start_date'
                   and Reported_Date <= '$end_date'
                   and Test_Name = '$Test_Name'
                   and Agency_Name = '$agency_name'
                   $where
-                  GROUP BY Mayo_Order_Number
-                  ORDER BY Mayo_Order_Number) as a";
-      
-
+                  ";
+          
             $test_info_result = mysql_query($test_info_query, $invoice_db);
 
             $test_info = mysql_fetch_array($test_info_result);

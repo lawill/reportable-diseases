@@ -12,7 +12,6 @@ require_once('authorize.inc.php');
 $start_date = date('Y-m-d', $_GET['form_data']['start_date']);
 $end_date = date('Y-m-d', $_GET['form_data']['end_date']);
 
-$account = trim($_GET['form_data']['account'], 'C');
 $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -151,6 +150,8 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
                             </form>
                            
                             <?php
+                            
+                            /*
                             if($_GET['account'] != "" && $_GET['account']!='all' && $admin_view) {
                                 $where = "Client_Account = '".$_GET['account']."'" ;
                                 $authorized_accounts[] = $_GET['account'];
@@ -164,6 +165,8 @@ $where = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
                             $authorized_accounts[] = $_GET['account'];
 
                             }
+                             * 
+                             */
                             include('table.inc.php');
                             ?>
                             <!-- InstanceEndEditable --></div>

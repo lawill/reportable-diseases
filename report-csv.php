@@ -1,13 +1,6 @@
 <?php
 
 
-//filter/validate date information here
-
-$account_number = $_GET['account_number'];
-
-$start_date = $_GET['start_date'];
-$end_date = $_GET['end_date'];
-
 
 
 $protect_from_forgery = true;
@@ -16,6 +9,11 @@ $specific_permission = 'Receive Reportable Disease Reports';
 require('' . 'master.inc.php');
 require_once('authorize.inc.php');
 
+//filter/validate date information here
+$account_number = $_GET['account_number'];
+
+$start_date = $_GET['start_date'];
+$end_date = $_GET['end_date'];
 require("date_check.php");
 
 if($account_number != "all") {
@@ -31,10 +29,6 @@ header("Content-Disposition: attachment; filename=$account_number-$start_date-$e
 
 header("Pragma: public");
 header("Expires: 0");
-
-$where = $admin_view ? '' : " AND AccountNumber IN('" . implode("','", $authorized_accounts) . "')";
-$views_insert = "INSERT into reportable_diseases_views
-                   VALUES";
 
 $account_where = array();
 $account_where[] = "(Client_Account IN('" . implode("','", $authorized_accounts) . "'))";
@@ -69,12 +63,11 @@ $query_string = "SELECT Agency_Name, Agency_State, Client_Account,
                   $where"
                 . "GROUP BY Agency_Name, Test_Name, Mayo_Order_Number";
 
-
+// Insert users activity into security log
 $view_insert = "INSERT INTO reportable_diseases_views (person_id, email, account_number, report_type) "
         . "VALUES ('".$_SESSION['user']['id']."', "
         . "'".$_SESSION['user']['email']."', "
-        . "'$account_number.', "
-        . "'CSV Report')";
+        . "'$account_number','CSV Report')";
 
 mysql_query($view_insert, $invoice_db);
 
